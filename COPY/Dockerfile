@@ -1,5 +1,10 @@
-FROM golang AS build
+# Stage 1: name this stage "build"
+FROM golang:1.21 AS build
 WORKDIR /app
-RUN --mount=type=bind,target=. go build -o /myapp ./cmd
+COPY . .
+RUN go build -o /myapp ./cmd
 
-COPY --from=build /myapp /usr/bin/
+# Stage 2: final image
+FROM almalinux:9
+COPY --from=build /myapp /usr/bin/   # ✅ now correctly references stage 1
+CMD ["/usr/bin/myapp"]
