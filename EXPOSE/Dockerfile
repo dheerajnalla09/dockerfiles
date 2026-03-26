@@ -1,5 +1,5 @@
 FROM almalinux:9
 
-LABEL COURSE="Docker" \
-      TRAINER="Dheeraj" \
-      TIME="100HRS"
+RUN dnf install nginx -y
+EXPOSE 80
+CMD ["nginx","-g","daemon off;"]
